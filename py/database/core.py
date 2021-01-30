@@ -1,7 +1,11 @@
+from pathlib import Path
 from sqlite3.dbapi2 import connect
 from typing import List, Tuple
 
-db_location = "presidential-election-voting-patterns.sqlite"
+
+# test_loc = Path(__file__).parent.parent.parent / "data"
+
+db_location = Path(__file__).parent.parent.parent / "data/presidential-election-voting-patterns.sqlite"
 
 
 def execute(sql: str, params: Tuple = None):

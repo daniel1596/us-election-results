@@ -1,11 +1,11 @@
-from database.core import get_results, execute
+from py.database.core import get_results, execute
 
 
-def insert_election_data_2000(results: list):
+def insert_election_data_2020(results: list):
     for result in results:
         state_name, r_pct, d_pct = result
-        insert_election_data(state_name, "R", r_pct, 2000)
-        insert_election_data(state_name, "D", d_pct, 2000)
+        insert_election_data(state_name, "R", r_pct, 2020)
+        insert_election_data(state_name, "D", d_pct, 2020)
 
 
 def insert_election_data(state_name: str, party_abbr: str, pct: float, year: int, district: int = None):
@@ -32,7 +32,7 @@ def get_state_id_by_name(state_name: str) -> int:
     return get_results("SELECT ID FROM State WHERE Name = ? ", (state_name,))[0][0]
 
 
-def select_election_data():
+def select_election_data(year: int = None):
     sql = "SELECT ev.Percentage," \
           " ev.PoliticalPartyAbbreviation, " \
           " ev.Year," \
@@ -41,5 +41,8 @@ def select_election_data():
           "FROM ElectoralVote AS ev" \
           " INNER JOIN ElectoralEntity AS ee on ev.ElectoralEntityID = ee.ID" \
           " INNER JOIN State AS s ON ee.StateID = s.ID"
+
+    if year:
+        sql += f" WHERE year = {year}" # not getting data from client
 
     return get_results(sql)
