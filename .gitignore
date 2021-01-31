@@ -130,3 +130,6 @@ dmypy.json
 
 # PyCharm
 .idea
+
+# JavaScript stuff
+node_modules/
