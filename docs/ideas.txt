@@ -1,0 +1,13 @@
+What questions do I want to answer with this app?
+- Primary motivation was determining how states/districts are leaning in each election,
+  relative to the national average for that election.
+  For example, it doesn't matter that Obama barely won NC in 2008 if it was still something like R+6.
+  - I think that was really the main question... I can add more later if desired. Can add Senate races, for example.
+
+
+From that, what does the API need to be providing:
+- A list of electoral entities followed by their voting record.
+  - Each entity has votes for a particular year. They need to know what R and D values were.
+    I will be trying to see trends of both R and D relative to national average.
+    (R - D) might be a decent gauge to start but eventually want to have both.
+    Still, the front-end can decide that.
