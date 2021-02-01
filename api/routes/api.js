@@ -28,11 +28,38 @@ db.serialize(function () {
   })
 })
 
+// TODO issue - this is not accurate. 
+// Average vote share can't be determined from averaging the average of the states.
+// To determine the popular vote requires counting up the actual votes. Dang.
+let averageVoteShare = {}
+const getAverageVoteShareSql = `
+SELECT PoliticalPartyAbbreviation, Year, ROUND(AVG(Percentage), 2) AS PercentOfVote
+FROM ElectoralVote
+GROUP BY PoliticalPartyAbbreviation, Year
+ORDER BY Year`
+
+db.serialize(function () {
+  db.each(getAverageVoteShareSql, function (err, row) {
+    const { PoliticalPartyAbbreviation, Year, PercentOfVote } = row
+    
+    if (!averageVoteShare[Year])
+      averageVoteShare[Year] = {}
+
+    averageVoteShare[Year][PoliticalPartyAbbreviation] = PercentOfVote
+
+    // if (averageVoteShare[Year]['D'] && averageVoteShare[Year]['R'])
+      //averageVoteShare[Year]["R-D"] = averageVoteShare[Year]['R'] - averageVoteShare[Year]['D']
+  })
+})
+
 db.close()
 
 
 api.get('/', function (req, res) {
-  res.json(votes)
+  res.json({ 
+    averageVoteShare,
+    by_entity: votes
+  })
 })
 
 module.exports = api

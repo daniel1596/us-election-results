@@ -11,3 +11,5 @@ From that, what does the API need to be providing:
     I will be trying to see trends of both R and D relative to national average.
     (R - D) might be a decent gauge to start but eventually want to have both.
     Still, the front-end can decide that.
+- The averages in each election of R & D (haha) voting percentages and R-D % margin
+  - This can be calculated easily in SQL
