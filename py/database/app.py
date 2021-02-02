@@ -1,4 +1,4 @@
-from py.database.elections import insert_election_data, select_election_data, insert_election_data_2020
+from py.database.elections_scripting_original import insert_election_data, select_election_data, insert_election_data_2020
 
 
 def insert_district_data(year: int):

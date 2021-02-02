@@ -17,6 +17,15 @@ def execute(sql: str, params: Tuple = None):
     connection.close()
 
 
+def execute_many(sql: str, items: List):
+    """Use the connection.executemany() method to bulk insert items at once."""
+    connection = connect(db_location)
+    connection.executemany(sql, items)
+
+    connection.commit()
+    connection.close()
+
+
 
 def get_results(sql: str, params: Tuple = None) -> List:
     connection = connect(db_location)
@@ -29,3 +38,14 @@ def get_results(sql: str, params: Tuple = None) -> List:
     connection.close()
 
     return data
+
+
+def get_single_result(sql: str, params: Tuple):
+    """There would need to be params to filter the results here"""
+    connection = connect(db_location)
+    cursor = connection.execute(sql, params)
+    row = cursor.fetchone()
+
+    connection.close()
+
+    return row
