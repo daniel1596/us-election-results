@@ -7,6 +7,6 @@ What questions do I want to answer with this app?
 
 From that, what does the API need to be providing:
 - A list of electoral entities (currently only states) followed by their voting record.
-    The API is exposing both the percentages for D/R/3rd party and the total vote share.
-        Oh it also needs to expose overall averages for R, D, and 3rd-party in the nationwide elction.
-        But that won't be difficult to add.
+    The API is exposing both the percentages for D/R/3rd party and the total vote share, statewide and nationwide.
+    Now it's also showing the difference between the state and the nation - finally getting closer to what we wanted to see!
+
