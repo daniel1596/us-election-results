@@ -30,20 +30,6 @@ def execute_many(sql: str, items: List):
     connection.close()
 
 
-def get_results(sql: str, params: Tuple = None) -> List:
-    """Used only with the old scripting. Candidate to remove."""
-    connection = connect(db_location)
-    cursor = connection.execute(sql) if not params \
-        else connection.execute(sql, params)
-
-    data = cursor.fetchall()
-    column_names = [desc[0] for desc in cursor.description]
-
-    connection.close()
-
-    return data
-
-
 def select_single_row(sql: str, params: Tuple):
     """The params are required to filter the results here"""
     connection = connect(db_location)

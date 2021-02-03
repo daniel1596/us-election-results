@@ -6,10 +6,7 @@ What questions do I want to answer with this app?
 
 
 From that, what does the API need to be providing:
-- A list of electoral entities followed by their voting record.
-  - Each entity has votes for a particular year. They need to know what R and D values were.
-    I will be trying to see trends of both R and D relative to national average.
-    (R - D) might be a decent gauge to start but eventually want to have both.
-    Still, the front-end can decide that.
-- The averages in each election of R & D (haha) voting percentages and R-D % margin
-  - This can be calculated easily in SQL
+- A list of electoral entities (currently only states) followed by their voting record.
+    The API is exposing both the percentages for D/R/3rd party and the total vote share.
+        Oh it also needs to expose overall averages for R, D, and 3rd-party in the nationwide elction.
+        But that won't be difficult to add.
