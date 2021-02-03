@@ -3,9 +3,13 @@ from sqlite3.dbapi2 import connect
 from typing import List, Tuple
 
 
-# test_loc = Path(__file__).parent.parent.parent / "data"
-
 db_location = Path(__file__).parent.parent.parent / "data/presidential-election-voting-patterns.sqlite"
+
+
+"""
+It would be nice to use a context manager here if I could, but I'm not entirely sure the best way to do that
+but it would be good to avoid repeatable code if I refactor
+"""
 
 
 def execute(sql: str, params: Tuple = None):
@@ -26,8 +30,8 @@ def execute_many(sql: str, items: List):
     connection.close()
 
 
-
 def get_results(sql: str, params: Tuple = None) -> List:
+    """Used only with the old scripting. Candidate to remove."""
     connection = connect(db_location)
     cursor = connection.execute(sql) if not params \
         else connection.execute(sql, params)
@@ -40,8 +44,8 @@ def get_results(sql: str, params: Tuple = None) -> List:
     return data
 
 
-def get_single_result(sql: str, params: Tuple):
-    """There would need to be params to filter the results here"""
+def select_single_row(sql: str, params: Tuple):
+    """The params are required to filter the results here"""
     connection = connect(db_location)
     cursor = connection.execute(sql, params)
     row = cursor.fetchone()
@@ -49,3 +53,7 @@ def get_single_result(sql: str, params: Tuple):
     connection.close()
 
     return row
+
+
+def select_single_value(sql: str, params: Tuple):
+    return select_single_row(sql, params)[0]

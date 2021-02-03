@@ -7,5 +7,10 @@ def main():
     insert_into_db(election_results)
 
 
+def print_warning_message():
+    print("NOTE: The data has already been imported into the SQLite database."
+          "\nPlease do not re-run unless there is an error in the data and it has been removed from the db.")
+
+
 if __name__ == "__main__":
-    main()
+    print_warning_message()

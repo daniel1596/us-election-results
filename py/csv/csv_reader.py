@@ -1,8 +1,8 @@
 from csv import DictReader
 from typing import List, Dict
 
-# I feel election results should only go back to this year, as
-# Clinton was a less polarizing president than those who came after him
+# I feel election results should only go back to this year, as in my mind, partisanship really increased
+# starting after the Bill Clinton presidency (looking at the Electoral map) and the 2000 FL debacle
 minimum_year = 2000
 
 
