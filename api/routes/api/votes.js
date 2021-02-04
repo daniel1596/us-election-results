@@ -1,10 +1,5 @@
-const cors = require("cors")
-const express = require("express")
-
-let db = require("../database/core.js")
-let sql_scripts = require("../database/sql_scripts")
-
-let api = express.Router()
+let db = require("../../database/core.js")
+let { getVoteShareNationwide, getVoteShareStatewide } = require("../../database/sql_scripts")
 
 let nationwide_vote_shares = {}
 let statewide_vote_shares = {}
@@ -14,13 +9,13 @@ db.serialize(function () {
   // This would probably be inefficient if we had millions of results, however.
 
   // Get nationwide results first
-  db.each(sql_scripts.getNationwideVoteShare, function (err, row) {
+  db.each(getVoteShareNationwide, function (err, row) {
     let year = row.Year
     delete row.Year
     nationwide_vote_shares[`${year}`] = row
   })
 
-  db.all(sql_scripts.getStatewideVoteShare, function (err, rows) {
+  db.all(getVoteShareStatewide, function (err, rows) {
     let stateNames = [... new Set(rows.map(row => row.StateName))]
     stateNames.forEach(stateName => {
       let rowsForState = rows.filter(row => row.StateName === stateName)
@@ -38,13 +33,7 @@ db.serialize(function () {
   })
 })
 
-db.close()
-
-api.get('/votes', cors(), function (req, res, next) {  
-  res.json({
-    nationwide_vote_shares,
-    statewide_vote_shares
-  })
-})
-
-module.exports = api
+module.exports = {
+  nationwide_vote_shares,
+  statewide_vote_shares
+}

@@ -1,29 +1,32 @@
 <template>
   <div>
     <div class="mb-3">
-      <label class="me-2">Choose your state</label>
+      <label class="me-2">State:</label>
       <select v-model="selected.stateName">
         <option v-for="stateName of Object.keys(statewideVoteShares)" :key="stateName">
           {{ stateName }}
         </option>
       </select>
     </div>
-    <div>
-      <p>The election data is this:</p>
-      <div>
-        <div class="row">
-          <div v-for="header in ['Year', 'OffsetFromNationalAvgD', 'OffsetFromNationalAvgR', 'OffsetFromNationalAvg3rd']" 
-            :key="header" class="col">
-            {{ header }}
-          </div>
-        </div>
-        <div class="row" v-for="election of statewideVoteShares[selected.stateName]" :key="election.Year">
-          <div class="col">{{ election.Year }}</div>
-          <div class="col">{{ +election.OffsetFromNationalAvgD.toFixed(2) }}</div>
-          <div class="col">{{ +election.OffsetFromNationalAvgR.toFixed(2) }}</div>
-          <div class="col">{{ +election.OffsetFromNationalAvg3rd.toFixed(2) }}</div>
+    <div class="mb-4">
+      <div class="row">
+        <div v-for="header in ['Year', 'OffsetFromNationalAvgD', 'OffsetFromNationalAvgR', 'OffsetFromNationalAvg3rd']" 
+          :key="header" class="col">
+          <strong>{{ header }}</strong>
         </div>
       </div>
+      <div class="row" v-for="election of statewideVoteShares[selected.stateName]" :key="election.Year">
+        <div class="col">{{ election.Year }}</div>
+        <div class="col">{{ +election.OffsetFromNationalAvgD.toFixed(2) }}</div>
+        <div class="col">{{ +election.OffsetFromNationalAvgR.toFixed(2) }}</div>
+        <div class="col">{{ +election.OffsetFromNationalAvg3rd.toFixed(2) }}</div>
+      </div>
+    </div>
+    <div>
+      <h4>Daniel's Analysis</h4>
+      <p>
+        {{ analysis[selected.stateName] ? analysis[selected.stateName] : "(No analysis yet)" }}
+      </p>
     </div>
   </div>
 </template>
@@ -35,6 +38,7 @@ export default {
   name: 'ElectionOptions',
   data: function () {
     return {
+      analysis: {},
       selected: {
         stateName: "Alabama"
       }
@@ -45,16 +49,30 @@ export default {
   },
   methods: {
     ...mapActions(['setVoteShares']),
-    loadData: function () {
-      fetch('http://localhost:3000/api/v0/votes')
-        .then(response => response.json())
+    loadDataFromApi: function () {
+      Promise.all(['/analysis', '/votes'].map(endpoint =>
+        fetch(`http://localhost:3000/api/v0${endpoint}`).then(response => response.json())
+      ))
         .then(data => {
-          this.setVoteShares(data)
+          this.analysis = data[0]["statewideAnalysis"]
+          
+          const voteShareData = data[1]
+          this.setVoteShares(voteShareData)
+
+          this.selectRandomState()
         })
+    },
+    selectRandomState: function () {
+      // It might seem silly to calculate the number of states dynamically, but this could change - 
+      // e.g. if one day we can calculate Maine's 2nd separately from statewide
+      const stateNames = Object.keys(this.statewideVoteShares)
+      const randomIndex = Math.round(Math.random() * stateNames.length)
+      
+      this.selected.stateName = stateNames[randomIndex]
     }
   },
   mounted: function () {
-    this.loadData()
+    this.loadDataFromApi()
   }
 }
 </script>
