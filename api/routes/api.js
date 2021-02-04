@@ -1,8 +1,10 @@
+const cors = require("cors")
 const express = require("express")
-let api = express.Router()
 
 let db = require("../database/core.js")
 let sql_scripts = require("../database/sql_scripts")
+
+let api = express.Router()
 
 let nationwide_vote_shares = {}
 let statewide_vote_shares = {}
@@ -12,8 +14,10 @@ db.serialize(function () {
   // This would probably be inefficient if we had millions of results, however.
 
   // Get nationwide results first
-  db.all(sql_scripts.getNationwideVoteShare, function (err, rows) {
-    nationwide_vote_shares = rows // can reorganize the JSON later if needed; for now it's fine
+  db.each(sql_scripts.getNationwideVoteShare, function (err, row) {
+    let year = row.Year
+    delete row.Year
+    nationwide_vote_shares[`${year}`] = row
   })
 
   db.all(sql_scripts.getStatewideVoteShare, function (err, rows) {
@@ -23,9 +27,10 @@ db.serialize(function () {
       rowsForState.forEach(row => {
         delete row.StateName // Since the data is now grouped by state name, we don't need this property
 
-        let voteShareForYear = nationwide_vote_shares.find(share => share.Year === row.Year)
+        let voteShareForYear = nationwide_vote_shares[row.Year]
         row["OffsetFromNationalAvgD"] = row["PctD"] - voteShareForYear.PctD
         row["OffsetFromNationalAvgR"] = row["PctR"] - voteShareForYear.PctR
+        row["OffsetFromNationalAvg3rd"] = row["PctThirdParty"] - voteShareForYear.PctThirdParty
       })
 
       statewide_vote_shares[stateName] = rowsForState
@@ -35,8 +40,7 @@ db.serialize(function () {
 
 db.close()
 
-
-api.get('/', function (req, res) {
+api.get('/votes', cors(), function (req, res, next) {  
   res.json({
     nationwide_vote_shares,
     statewide_vote_shares

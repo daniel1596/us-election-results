@@ -3,12 +3,12 @@ const app = express()
 const port = 3000
 
 let api = require("./routes/api")
-const apiUrl = "/api/v0"
+const apiRootUrl = "/api/v0"
 
-app.use(apiUrl, api)
+app.use(apiRootUrl, api)
 
 app.get('/', (req, res) => {
-  res.send(`Click <a href="${apiUrl}" target="_self">here</a> for the API.`)
+  res.send(`Click <a href="${apiRootUrl}/votes" target="_self">here</a> for the API.`)
 })
 
 app.listen(port, () => {
