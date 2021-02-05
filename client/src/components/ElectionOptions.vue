@@ -10,16 +10,20 @@
     </div>
     <div class="mb-4">
       <div class="row">
-        <div v-for="header in ['Year', 'OffsetFromNationalAvgD', 'OffsetFromNationalAvgR', 'OffsetFromNationalAvg3rd']" 
+        <div v-for="header in ['Year', 'Avg Offset D', 'Avg Offset R', 'Avg Offset 3rd', '%D', '%R', '%3rd']" 
           :key="header" class="col">
           <strong>{{ header }}</strong>
         </div>
       </div>
+      <!-- For now, a very basic table will suffice. I will likely try to make this fancier later, though. -->
       <div class="row" v-for="election of statewideVoteShares[selected.stateName]" :key="election.Year">
         <div class="col">{{ election.Year }}</div>
         <div class="col">{{ +election.OffsetFromNationalAvgD.toFixed(2) }}</div>
         <div class="col">{{ +election.OffsetFromNationalAvgR.toFixed(2) }}</div>
         <div class="col">{{ +election.OffsetFromNationalAvg3rd.toFixed(2) }}</div>
+        <div class="col">{{ +election.PctD.toFixed(2) }}</div>
+        <div class="col">{{ +election.PctR.toFixed(2) }}</div>
+        <div class="col">{{ +election.PctThirdParty.toFixed(2) }}</div>
       </div>
     </div>
     <div>
