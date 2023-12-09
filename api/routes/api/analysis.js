@@ -1,5 +1,5 @@
-let db = require("../../database/core.js")
-let { getAnalysisStatewide } = require("../../database/sql_scripts")
+import db from "../../database/core.js"
+import { getAnalysisStatewide } from "../../database/sql_scripts.js"
 
 let statewideAnalysis = {}
 
@@ -9,6 +9,6 @@ db.serialize(function () {
   })
 })
 
-module.exports = {
+export {
   statewideAnalysis
 }

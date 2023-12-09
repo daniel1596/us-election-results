@@ -1,13 +1,11 @@
 // sqlite portion - can export somewhere else at some point
-const sqlite3 = require('sqlite3').verbose()
+import sqlite3 from 'sqlite3'
 
 // This file path seems to relative to the app.js path, which I suppose is using this file
 // via the app.use(api) command
-db = new sqlite3.Database("../data/presidential-election-voting-patterns.sqlite")
+const db = new sqlite3.Database("../data/presidential-election-voting-patterns.sqlite")
 
-module.exports = db
-
-
+export default db
 
 // Extra code - leaving here now for reference. May not want to keep here forever.
 

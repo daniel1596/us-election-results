@@ -2,13 +2,13 @@
  * This file serves as a place to store SQL scripts that we will want to import via Node and run via sqlite3 in our API.
  */
 
-const getAnalysisStatewide = `
+export const getAnalysisStatewide = `
   SELECT state.Name, sea.Analysis
   FROM StateElectionsAnalysis AS sea
 	  INNER JOIN State AS state ON state.ID = sea.StateID`
 
 
-const getVoteShareNationwide = `
+export const getVoteShareNationwide = `
   SELECT 
        sevt.Year,
        SUM(sevt.VoteCount) AS VoteCountTotal,
@@ -21,7 +21,7 @@ const getVoteShareNationwide = `
   ORDER BY sevt.Year`
 
 
-const getVoteShareStatewide = `
+export const getVoteShareStatewide = `
   SELECT 
        s.Name AS StateName,
        sevt.Year,
@@ -34,10 +34,3 @@ const getVoteShareStatewide = `
   WHERE sevt.ElectoralVoteTypeID == 'P'
   GROUP BY s.Name, sevt.Year
   ORDER BY s.Name, sevt.Year`
-
-
-module.exports = { 
-  getAnalysisStatewide, 
-  getVoteShareNationwide, 
-  getVoteShareStatewide
-}

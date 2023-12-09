@@ -1,8 +1,8 @@
-const express = require('express')
+import express from 'express'
 const app = express()
 const port = 3000
 
-let api = require("./routes/api")
+import api from "./routes/api/index.js"
 const apiRootUrl = "/api/v0"
 
 app.use(apiRootUrl, api)

@@ -1,11 +1,11 @@
-const cors = require("cors")
-const express = require("express")
+import cors from "cors"
+import { Router } from "express"
 
-let db = require("../../database/core.js")
-const { statewideAnalysis } = require('./analysis')
-const { nationwide_vote_shares, statewide_vote_shares } = require('./votes')
+import db from "../../database/core.js"
+import { statewideAnalysis } from './analysis.js'
+import { nationwide_vote_shares, statewide_vote_shares } from './votes.js'
 
-let api = express.Router()
+let api = Router()
 
 api.get('/analysis', cors(), function (req, res, next) {
   res.json({
@@ -22,4 +22,4 @@ api.get('/votes', cors(), function (req, res, next) {
 
 db.close()
 
-module.exports = api
+export default api

@@ -1,5 +1,5 @@
-let db = require("../../database/core.js")
-let { getVoteShareNationwide, getVoteShareStatewide } = require("../../database/sql_scripts")
+import db from "../../database/core.js"
+import { getVoteShareNationwide, getVoteShareStatewide } from "../../database/sql_scripts.js"
 
 let nationwide_vote_shares = {}
 let statewide_vote_shares = {}
@@ -33,7 +33,7 @@ db.serialize(function () {
   })
 })
 
-module.exports = {
+export {
   nationwide_vote_shares,
   statewide_vote_shares
 }
