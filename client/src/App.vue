@@ -1,17 +1,13 @@
-<template>
-  <div class="container mt-4">
-    <h3>Election results</h3>
-    <ElectionOptions />
-  </div>
-</template>
-
-<script>
+<script setup>
 import ElectionOptions from './components/ElectionOptions.vue'
-
-export default {
-  name: 'App',
-  components: {
-    ElectionOptions
-  }
-}
 </script>
+
+<template>
+  <!-- Probably don't need a <header> or anything for this simple app -->
+  <main>
+    <div class="container mt-4">
+      <h3>Election results</h3>
+      <ElectionOptions />
+    </div>
+  </main>
+</template>
